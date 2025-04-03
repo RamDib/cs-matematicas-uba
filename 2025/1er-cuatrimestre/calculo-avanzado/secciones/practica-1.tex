@@ -1,0 +1,163 @@
+\subsection*{Práctica 1: Posets, cardinalidad, lema de Zorn}
+
+\begin{exercise}[1]
+    Probar que todo reticulado completo tiene máximo y mínimo.
+\end{exercise}
+
+\begin{proof}[Solución]
+    Sea $(\mathcal{O}, \preceq)$ un reticulado completo. Por definición de reticulado completo, todo subconjunto tiene supremo e ínfimo. Por lo tanto, $\sup \mathcal{O} \in \mathcal{O}$ existe, y para todo $x \in \mathcal{O}$, $x \preceq \sup \mathcal{O}$. Similarmente, $\inf \mathcal{O} \in \mathcal{O}$ existe, y para todo $x \in \mathcal{O}$, $\inf \mathcal{O} \preceq x$. Así, $\sup \mathcal{O}$ es el máximo y $\inf \mathcal{O}$ es el mínimo de $\mathcal{O}$.
+\end{proof}
+
+\begin{exercise}[2]
+    Probar que toda cadena es un reticulado distributivo.
+\end{exercise}
+
+\begin{proof}[Solución]
+    Sea $(\mathcal{C}, \preceq)$ una cadena, es decir, un conjunto totalmente ordenado. Para demostrar que es un reticulado distributivo, debemos verificar que para cualesquiera $x, y, z \in \mathcal{C}$, se cumple:
+    $$
+    x \wedge (y \vee z) = (x \wedge y) \vee (x \wedge z) \quad \text{y} \quad x \vee (y \wedge z) = (x \vee y) \wedge (x \vee z).
+    $$
+    En una cadena, dado que cualquier par de elementos es comparable, el supremo e ínfimo son iguales al máximo y mínimo, respectivamente. Por lo tanto, la distributividad es trivial.
+\end{proof}
+
+\begin{exercise}[3]
+    Sea $L$ un conjunto parcialmente ordenado con la propiedad de que todo subconjunto no vacío acotado superiormente tiene supremo. Probar que todo subconjunto no vacío acotado inferiormente tiene ínfimo.
+\end{exercise}
+
+\begin{proof}[Solución]
+    Sea $A \subseteq L$ un subconjunto no vacío acotado inferiormente por $x \in L$. Sea $B$ el conjunto de cotas inferiores de $A$. Como $x$ es cota inferior de $A$, sabemos que $B$ no es vacío. Además, para todo $a \in A$ y $b \in B$, se cumple que $b \leq a$; es decir, todo elemento de $A$ es cota superior de $B$. 
+
+    Como $B$ no es vacío y está acotado superiormente, por hipótesis, $\sup B$ existe. Dado que $\sup B$ es cota inferior de $A$ y que es la mayor de las cotas inferiores, obtenemos que $\sup B = \inf A$.
+\end{proof}
+
+\begin{exercise}[4]
+    Probar que en cualquier reticulado todo subconjunto finito no vacío tiene supremo e ínfimo.
+\end{exercise}
+
+\begin{proof}
+    Probamos únicamente para el supremo, ya que la demostración para el ínfimo es análoga. 
+    
+    Vayamos por inducción en $\left| X \right|$. Para $\left| X \right| = 1$, $\sup X$ es el único elemento de $X$.
+
+    Sea $\left| X \right| = n$. Supongamos que todo subconjunto no vacío con cardinal menor a $n$ posee supremo. Consideremos los conjuntos
+    $$
+        X = \set{ x_{1}, x_{2}, \dots, x_{n} } \quad \text{e} \quad Y = \set{ x_{1}, x_{2}, \dots, x_{n-2}, x_{n-1} \vee x_{n} }.
+    $$
+    Notemos que $\left| Y \right| = n-1$; por lo tanto, existe $\sup Y$. Como 
+    $$
+        x_1, x_2, \dots, x_{n-2} \leq \sup Y
+    $$
+    y
+    $$
+        x_{n-1}, x_n \leq x_{n-1} \vee x_{n} \leq \sup Y,
+    $$
+    tenemos que $\sup Y$ es cota superior de $X$. Sea $c$ una cota superior de $X$. Entonces,
+    $$
+    x_1, x_2, \dots, x_{n-2} \leq c
+    $$
+    y
+    $$
+        x_{n-1}, x_n \leq c,
+    $$
+    por lo que $c$ es cota superior de $x_{n-1}, x_n$. Por definición de supremo, $x_{n-1} \vee x_{n} \leq c$. O sea, $c$ también es cota superior de $Y$. Esto nos dice que $\sup Y \leq c$. 
+
+    Por lo tanto, $\sup Y$ es cota superior de $X$ y para toda cota superior $c$ de $X$, $\sup Y \leq c$. Entonces, $\sup X = \sup Y$.
+\end{proof}
+
+\begin{exercise}[5]
+    Sea $L$ un reticulado, probar que son equivalentes:
+    \begin{enumerate}
+        \item[(i)] $x \wedge (y \vee z) = (x \wedge y) \vee (x \wedge z)$ para cualesquiera $x, y, z \in L$;
+        \item[(ii)] $x \vee (y \wedge z) = (x \vee y) \wedge (x \vee z)$ para cualesquiera $x, y, z \in L$.
+    \end{enumerate}
+\end{exercise}
+
+\begin{proof}[Solución]
+    Probamos únicamente (i) $\Rightarrow$ (ii), la vuelta es análoga. Supongamos que $x \wedge (y \vee z) = (x \wedge y) \vee (x \wedge z)$ para cualesquiera $x, y, z \in L$. Calculamos
+    \begin{align*}  
+        \overbrace{(x \vee y)}^{= y'} \wedge (x \vee z) &=  y' \wedge (x \vee z) \\
+            &= (y' \wedge z) \vee (y' \wedge x) \\
+            &= ((x \vee y) \wedge z) \vee ((x \vee y) \wedge x) \\
+            &= ((x \wedge z) \vee (y \wedge z)) \vee x \\
+            &= (x \vee (x \wedge z)) \vee (y \wedge z) \\
+            &= x \vee (y \wedge z).
+    \end{align*}
+    Por lo tanto, $x \vee (y \wedge z) = (x \vee y) \wedge (x \vee z)$, como queríamos demostrar.
+\end{proof}
+
+\begin{exercise}[6]
+    Sea $L$ un conjunto ordenado en el cual todo subconjunto no vacío tiene máximo y mínimo. Probar que $L$ es una cadena finita.
+\end{exercise}
+
+\begin{proof}[Solución]
+    Probemos que $L$ es una cadena. Sean $x, y \in L$. Como el subconjunto $\set{ x, y } \subseteq L$, por hipótesis, tiene máximo y mínimo. Es decir, $x \preceq y$ o $y \preceq x$. Entonces, $L$ es una cadena. Supongamos que $L$ es infinito. Entonces, existe un subconjunto $\set{ x_{1}, x_{2}, \dots }$ infinito tal que $x_i \preceq x_{i+1}$ para todo $i \in \mathbb{N}$, por lo que no tiene máximo. La demostración es análoga para el mínimo.
+\end{proof}
+
+\begin{exercise}[7]
+    Sea $P$ un poset en el cual el máximo tamaño de una cadena es $k$. Probar que $P$ se puede escribir como unión de $k$ anticadenas, y no se puede con menos de $k$ anticadenas.
+\end{exercise}
+
+\begin{proof}[Solución]
+    Construimos las anticadenas $A_1, A_2, \dots, A_k$ de la siguiente forma:
+    $$
+        A_1 = \text{maximales de } P \quad \text{y} \quad A_n =  \text{maximales de } P  - \bigcup_{i = 1}^{n-1} A_i, n \leq k.
+    $$
+    Después de $k$ pasos, el proceso termina. Entonces, $P = \bigcup_{i = 1}^{k} A_i$.
+
+    Sea $C$ una cadena de tamaño $k$. Cada elemento de $C$ debe pertenecer a una anticadena distinta; por lo tanto, hay por lo menos $k$ anticadenas.
+\end{proof}
+
+\begin{exercise}[8]
+    Dar un ejemplo de una función biyectiva entre dos posets que sea morfismo de orden pero no sea isomorfismo.
+\end{exercise}
+
+\begin{proof}[Solución]
+    La función $\operatorname{Id}: (\mathbb{N}, \mid ) \to (\mathbb{N}, \leq )$. Si $a \mid b$, entonces $a \leq b$. Y $2 \leq 3$ sin embargo $2 \nmid 3$.
+\end{proof}
+
+\begin{exercise}[9]
+    Sean $P_1$ una cadena, $P_2$ un poset cualquiera y $f: P_1 \to P_2$ una función inyectiva que es morfismo de orden. Probar que si $a, b \in P_1$ cumplen que $f(a) \preceq f(b)$, entonces $a \preceq b$.
+\end{exercise}
+    
+\begin{proof}[Solución]
+    Sean $a, b \in P_1$ tales que $f(a) \preceq f(b)$. Como $P_1$ es una cadena, sabemos que $a \preceq b$ o $b \preceq a$. 
+
+    Supongamos, por contradicción, que $b \prec a$. Dado que $f$ es un morfismo de orden, $f(b) \prec f(a)$ (si $f(b) = f(a)$ entonces, por inyectividad, $a = b$ lo cual es absurdo). Pero esto contradice nuestra suposición inicial de que $f(a) \preceq f(b)$.
+
+    Por lo tanto, la suposición de que $b \prec a$ es falsa, y debemos tener $a \preceq b$.
+\end{proof}
+    
+\begin{exercise}[10]
+    Sean $L_1$ y $L_2$ dos reticulados y $f: L_1 \to L_2$ un isomorfismo de orden. Probar que se cumple $f(a \vee b) = f(a) \vee f(b)$ para cualesquiera $a, b \in L_1$.
+\end{exercise}
+
+\begin{proof}[Solución]
+    Sean $a, b \in L_1$. Queremos probar que $f(a \vee b) = f(a) \vee f(b)$.
+
+    Como $a \preceq a \vee b$ y $b \preceq a \vee b$ en $L_1$, y $f$ es un morfismo de orden, tenemos que $f(a) \preceq f(a \vee b)$ y $f(b) \preceq f(a \vee b)$ en $L_2$. Por lo tanto, $f(a \vee b)$ es una cota superior de $f(a)$ y $f(b)$.
+
+    Sea $s$ una cota superior de $f(a)$ y $f(b)$ en $L_2$. Entonces, $f(a) \preceq s$ y $f(b) \preceq s$. Aplicando $f^{-1}$ (que también es un morfismo de orden), obtenemos $a \preceq f^{-1}(s)$ y $b \preceq f^{-1}(s)$. Esto significa que $f^{-1}(s)$ es una cota superior de $a$ y $b$ en $L_1$.
+
+    Como $a \vee b$ es el supremo de $a$ y $b$ en $L_1$, entonces $a \vee b \preceq f^{-1}(s)$. Aplicando $f$ a ambos lados, obtenemos $f(a \vee b) \preceq f(f^{-1}(s)) = s$.
+
+    Por lo tanto, $f(a \vee b)$ es una cota superior de $f(a)$ y $f(b)$, y toda cota superior $s$ de $f(a)$ y $f(b)$ es mayor o igual que $f(a \vee b)$. Esto significa que $f(a \vee b)$ es el supremo de $f(a)$ y $f(b)$ en $L_2$, es decir, $f(a \vee b) = f(a) \vee f(b)$.
+\end{proof}
+
+\begin{exercise}[11]
+    Sea $\sim$ una relación de equivalencia sobre un conjunto $A$. Para cada $a \in A$ se define el conjunto $[a] = \{b \in A : a \sim b\}$. Probar que:
+    \begin{enumerate}
+        \item[(a)] Para todo par de elementos $a_1, a_2 \in A$ vale que $[a_1] = [a_2]$ o $[a_1] \cap [a_2] = \emptyset$.
+        \item[(b)] $A = \bigcup_{a \in A} [a]$.
+    \end{enumerate}
+\end{exercise}
+
+\begin{proof}[Solución]
+    \noindent\textbf{(a)} Sean $a_1, a_2 \in A$. Supongamos que $[a_1] \cap [a_2] \neq \emptyset$. Entonces, existe $b \in A$ tal que $b \in [a_1]$ y $b \in [a_2]$. Esto significa que $b \sim a_1$ y $b \sim a_2$. Por la propiedad simétrica de la relación de equivalencia, $a_1 \sim b$ y $b \sim a_2$. Por la propiedad transitiva, $a_1 \sim a_2$.
+
+    Ahora, sea $x \in [a_1]$. Entonces, $x \sim a_1$. Como $a_1 \sim a_2$, por transitividad, $x \sim a_2$. Por lo tanto, $x \in [a_2]$, lo que implica que $[a_1] \subseteq [a_2]$. De manera similar, podemos demostrar que $[a_2] \subseteq [a_1]$. Por lo tanto, $[a_1] = [a_2]$.
+
+    \bigskip
+
+    \noindent\textbf{(b)} Sea $x \in A$. Como $\sim$ es reflexiva, $x \sim x$, lo que implica que $x \in [x]$. Por lo tanto, $x \in \bigcup_{a \in A} [a]$. Esto demuestra que $A \subseteq \bigcup_{a \in A} [a]$. Por otro lado, si $x \in \bigcup_{a \in A} [a]$, entonces existe $a \in A$ tal que $x \in [a]$, lo que implica que $x \in A$. Esto demuestra que $\bigcup_{a \in A} [a] \subseteq A$. Por lo tanto, $A = \bigcup_{a \in A} [a]$.
+\end{proof}
+

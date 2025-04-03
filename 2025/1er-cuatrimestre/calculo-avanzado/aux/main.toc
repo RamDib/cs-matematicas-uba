@@ -1,3 +1,13 @@
 \babel@toc {spanish}{}\relax 
-\contentsline {section}{\numberline {1}Espacios métricos}{2}{}%
-\contentsline {subsection}{\numberline {1.1}Sucesiones convergentes}{4}{}%
+\contentsline {section}{\numberline {1}Teoría de Conjuntos}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Relaciones}{2}{}%
+\contentsline {subsection}{\numberline {1.2}Conjuntos ordenados}{3}{}%
+\contentsline {subsection}{\numberline {1.3}Reticulados}{4}{}%
+\contentsline {subsection}{\numberline {1.4}Reticulados finitos}{6}{}%
+\contentsline {subsection}{\numberline {1.5}Morfismos de orden}{7}{}%
+\contentsline {subsection}{\numberline {1.6}Cardinalidad}{9}{}%
+\contentsline {subsection}{\numberline {1.7}Axioma de elección y lema de Zorn}{13}{}%
+\contentsline {subsection}{\numberline {1.8}Aritmética de cardinales}{14}{}%
+\contentsline {section}{\numberline {2}Espacios métricos}{17}{}%
+\contentsline {subsection}{\numberline {2.1}Sucesiones convergentes}{20}{}%
+\contentsline {section}{\numberline {3}Prácticas}{22}{}%

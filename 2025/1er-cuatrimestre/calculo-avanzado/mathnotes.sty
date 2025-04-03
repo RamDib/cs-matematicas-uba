@@ -1,0 +1,124 @@
+% mathnotes.sty - LaTeX Style File for Math Notes in Spanish
+
+\ProvidesPackage{mathnotes}
+
+% Packages
+\usepackage[paperwidth=6in, paperheight=9in, margin=0.75in]{geometry}
+\RequirePackage[spanish]{babel}  % Spanish language
+\RequirePackage[utf8]{inputenc}  % UTF-8 encoding
+\RequirePackage{amsmath, amssymb, amsthm, amsfonts, stmaryrd, gensymb} % Math packages
+\RequirePackage{xcolor, pagecolor}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{titlesec}
+\RequirePackage{mathpazo}
+\RequirePackage{tikz, pgfplots, float}
+\RequirePackage{enumitem}
+% \RequirePackage{parskip}
+
+
+\definecolor{fontcolor}{HTML}{17222B}
+\newcommand{\globalcolor}[1]{%
+  \color{#1}\global\let\default@color\current@color
+}
+
+\AtBeginDocument{\globalcolor{fontcolor}}
+
+\definecolor{pagecolor}{HTML}{FBF8F0} % 
+\pagecolor{pagecolor}
+
+\definecolor{maincolor}{HTML}{5A0000}
+\definecolor{definitioncolor}{HTML}{6E0000}
+\definecolor{theoremcolor}{HTML}{467D7F}
+\definecolor{propositioncolor}{HTML}{3C5759}
+\definecolor{lemmacolor}{HTML}{8B5E3C}
+\definecolor{examplecolor}{HTML}{696969}
+\definecolor{exercisecolor}{HTML}{4A4A4A}
+\definecolor{emphcolor}{HTML}{6E0000}
+
+\newtcolorbox[auto counter, number within=section]{theorem}{
+  breakable,
+  enhanced jigsaw,
+  boxrule=0pt,frame hidden,
+  borderline west={3pt}{0pt}{theoremcolor},
+  colback=theoremcolor!10!pagecolor,
+  sharp corners,
+  before upper={\textbf{\color{theoremcolor}Teorema~\thetcbcounter.}~},
+}
+
+\newtcolorbox[auto counter, number within=section]{proposition}{
+  breakable,
+  enhanced jigsaw,
+  boxrule=0pt,frame hidden,
+  borderline west={3pt}{0pt}{propositioncolor},
+  colback=propositioncolor!10!pagecolor,
+  sharp corners,
+  before upper={\textbf{\color{propositioncolor}Proposici\'on~\thetcbcounter.}~},
+}
+
+\newtcolorbox[auto counter, number within=section]{lemma}{
+  breakable,
+  enhanced jigsaw,
+  boxrule=0pt,frame hidden,
+  borderline west={3pt}{0pt}{lemmacolor},
+  colback=lemmacolor!10!pagecolor,
+  sharp corners,
+  before upper={\textbf{\color{lemmacolor}Lema~\thetcbcounter.}~},
+}
+
+\newtcolorbox[auto counter, number within=section]{definition}{
+  breakable,
+  enhanced jigsaw,
+  boxrule=0pt,frame hidden,
+  borderline west={3pt}{0pt}{definitioncolor},
+  colback=definitioncolor!10!pagecolor,
+  sharp corners,
+  before upper={\textbf{\color{definitioncolor}Definici\'on~\thetcbcounter.}~},
+}
+
+\newtcolorbox[auto counter, number within=section]{example}{
+  breakable,
+  enhanced jigsaw,
+  boxrule=0pt,frame hidden,
+  borderline west={3pt}{0pt}{examplecolor},
+  colback=examplecolor!10!pagecolor,
+  sharp corners,
+  before upper={\textbf{\color{examplecolor}Ejemplo~\thetcbcounter.}~},
+}
+
+\newtcolorbox[]{exercise}[1][]{
+  breakable,
+  enhanced jigsaw,
+  boxrule=0pt,frame hidden,
+  borderline west={3pt}{0pt}{exercisecolor},
+  colback=exercisecolor!10!pagecolor,
+  sharp corners,
+  before upper={\textbf{\color{exercisecolor}Ejercicio~{#1}.}~},
+}
+
+\newtcolorbox[]{custombox}[1][]{
+  breakable,
+  enhanced jigsaw,
+  boxrule=0pt,frame hidden,
+  borderline west={3pt}{0pt}{fontcolor},
+  colback=fontcolor!10!pagecolor,
+  sharp corners,
+  before upper={\textbf{\color{fontcolor}{#1}.}~},
+}
+
+\newtheorem{corollary}{\textbf{Corolario}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Observaci\'on}}
+
+\renewcommand{\proofname}{\textit{Demostraci\'on}}
+
+% Customizing Sections with Line Below and Maincolor
+\titleformat{\section}
+  {\normalfont\huge\bfseries\color{maincolor}}{\thesection}{1em}{}[{\titlerule[0.8pt]}]
+
+\titleformat{\subsection}
+  {\Large\bfseries\color{maincolor}}{\thesubsection}{1em}{}[]
+
+\renewcommand{\emph}[1]{\textit{\textbf{\color{emphcolor}#1}}}
+
+\newcommand{\set}[1]{\left\{ #1 \right\}}

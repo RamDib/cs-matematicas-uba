@@ -1,0 +1,187 @@
+\section{Números de Máquina}
+
+\subsection{Representación de Números Reales}
+
+Un número real $x \neq 0$ puede representarse en una base $b \in \mathbb{N}$, $b \ge 2$, mediante una expansión en serie:
+$$
+    x = \pm \left( d_k b^k + d_{k-1} b^{k-1} + \dots + d_0 b^0 + d_{-1} b^{-1} + d_{-2} b^{-2} + \dots \right)
+$$
+donde los dígitos $d_i$ satisfacen $0 \le d_i \le b-1$. Esta representación es única si se excluyen las expansiones infinitas que terminan en una secuencia de $b-1$.
+
+\subsection{Números de Máquina}
+
+\begin{definition}
+    Un \emph{número de máquina} (o \emph{número de punto flotante}) $x$ en base $b$ se representa generalmente en forma normalizada como:
+    $$
+        x = \pm (0.d_1 d_2 \dots d_m)_b \times b^e
+    $$
+    donde:
+    \begin{itemize}
+        \item $\pm$ es el signo del número.
+        \item $(0.d_1 d_2 \dots d_m)_b$ es la mantisa, con $m \ge 1$ dígitos en base $b$, y $d_1 \neq 0$ (para la forma normalizada). Los dígitos satisfacen $0 \le d_i \le b-1$ para $i=1, \dots, m$.
+        \item $e$ es el exponente, un entero tal que $E_{min} \le e \le E_{max}$, donde $E_{min}$ y $E_{max}$ son los límites del exponente para la máquina.
+    \end{itemize}
+    La cantidad de dígitos $m$ determina la precisión de la representación, y el rango del exponente $[E_{min}, E_{max}]$ determina el rango de magnitudes que se pueden representar.
+\end{definition}
+
+El conjunto de números de máquina es finito. El número de posibles mantisas es $(b-1)b^{m-1}$ (ya que $d_1 \neq 0$). Si el exponente puede tomar $b^E$ valores diferentes (donde $E$ es el número de dígitos para el exponente), y considerando los dos signos, el número total de números de máquina diferentes de cero es $2 \times (b-1)b^{m-1} \times b^E$. Se añade un símbolo especial para el cero.
+
+\subsection{Overflow y Underflow}
+
+\begin{definition}
+    \emph{Overflow:} Ocurre cuando el resultado de una operación es mayor en magnitud que el número de máquina más grande que se puede representar.
+
+    \emph{Underflow:} Ocurre cuando el resultado de una operación es menor en magnitud que el número de máquina positivo más pequeño que se puede representar (sin ser cero).
+\end{definition}
+
+El mayor número de máquina positivo es aproximadamente $(1 - b^{-m}) b^{E_{max}}$, y el menor número positivo normalizado es $b^{E_{min}}$.
+
+
+\subsection{Distribución de los Números de Máquina}
+
+Los números de máquina no están uniformemente distribuidos a lo largo de la recta real. La distancia entre dos números de máquina consecutivos con el mismo exponente $e$ es $b^{e-m}$. Esta distancia aumenta a medida que el exponente $e$ crece.
+
+
+\subsection{Error de Redondeo}
+
+Dado un número real $x$, si no es un número de máquina, debe ser aproximado por uno. El proceso de aproximación se llama redondeo. Dos estrategias comunes son:
+\begin{itemize}
+    \item \textbf{Redondeo al más cercano}: Se elige el número de máquina más cercano a $x$.
+    \item \textbf{Truncamiento (o redondeo hacia cero)}: Se elige el número de máquina más cercano a $x$ en dirección hacia cero.
+\end{itemize}
+
+\subsubsection{Error Absoluto y Relativo}
+
+Si $fl(x)$ es la representación de máquina de $x$, el error absoluto es $|x - fl(x)|$, y el error relativo es $\frac{|x - fl(x)|}{|x|}$ (para $x \neq 0$).
+
+Para el redondeo al más cercano, el error absoluto está acotado por $\frac{1}{2} b^{e-m}$, donde $e$ es el exponente tal que $b^{e-1} \le |x| < b^e$. El error relativo está acotado por:
+$$
+    \left| \frac{x - fl(x)}{x} \right| \le \frac{1}{2} b^{1-m}
+$$
+Para el truncamiento, el error absoluto está acotado por $b^{e-m}$, y el error relativo está acotado por:
+$$
+    \left| \frac{x - fl(x)}{x} \right| \le b^{1-m}
+$$
+
+\subsubsection{Épsilon de Máquina}
+
+\begin{definition}
+    El \emph{épsilon de máquina}, denotado por $\epsilon_m$, es la cota superior del error relativo cometido al representar un número real mediante un número de máquina utilizando el redondeo al más cercano.
+    $$
+        \epsilon_m = \frac{1}{2} b^{1-m}
+    $$
+    Equivalentemente, $\epsilon_m$ es el menor número positivo de máquina tal que $1 \oplus \epsilon_m > 1$, donde $\oplus$ denota la adición en la aritmética de punto flotante de la máquina.
+\end{definition}
+
+Para el estándar IEEE de doble precisión ($b=2, m=52$), $\epsilon_m \approx 2^{-52} \approx 1.11 \times 10^{-16}$. Esto significa que aproximadamente los primeros 15-16 dígitos decimales son precisos.
+
+
+\section{Propagación de Errores en Operaciones Aritméticas}
+
+Las operaciones aritméticas en la máquina no se realizan con precisión infinita. Si queremos calcular $x + y$, la máquina primero calcula las representaciones de máquina $fl(x)$ y $fl(y)$, luego realiza la suma y finalmente redondea el resultado a un número de máquina $fl(fl(x) + fl(y))$.
+
+Si $fl(x) = x(1 + \mu_x)$ y $fl(y) = y(1 + \mu_y)$, donde $|\mu_x|, |\mu_y| \le \epsilon_m$, entonces:
+$$
+    fl(x) \oplus fl(y) = (fl(x) + fl(y))(1 + \mu_z) = (x(1 + \mu_x) + y(1 + \mu_y))(1 + \mu_z)
+$$
+donde $|\mu_z| \le \epsilon_m$. El error relativo en la suma es aproximadamente acotado por $2\epsilon_m$ si $x$ e $y$ tienen el mismo signo.
+
+\subsection{Cancelación Catastrófica}
+
+La resta de dos números de máquina casi iguales puede llevar a una pérdida significativa de dígitos precisos, fenómeno conocido como cancelación catastrófica.
+
+\begin{example}
+    Consideremos $b=10, m=4$, y $\epsilon_m = \frac{1}{2} 10^{1-4} = 0.0005$. Sean $x = 125.49$ y $y = 125.31$. Entonces $x - y = 0.18$. Sin embargo, si $fl(x) = 1.255 \times 10^2$ y $fl(y) = 1.253 \times 10^2$, entonces $fl(x) \ominus fl(y) = 1.255 \times 10^2 - 1.253 \times 10^2 = 0.002 \times 10^2 = 0.2$. El error relativo es $\frac{|0.18 - 0.2|}{0.18} \approx 0.11$, que es mucho mayor que $\epsilon_m$.
+\end{example}
+
+\subsection{Pérdida de la Propiedad Asociativa}
+
+Debido al redondeo, la propiedad asociativa de la adición y la multiplicación no siempre se cumple en la aritmética de punto flotante.
+
+\begin{example}
+    Sea $\epsilon_m$ el épsilon de máquina. Entonces $1 \oplus (\epsilon_m / 2) = 1$, pero $(1 \oplus (\epsilon_m / 2)) \oplus (\epsilon_m / 2) = 1 \oplus (\epsilon_m / 2) = 1$, mientras que $1 \oplus (\epsilon_m / 2 + \epsilon_m / 2) = 1 \oplus \epsilon_m > 1$.
+\end{example}
+
+\section{Condición y Estabilidad}
+
+\subsection{Condición de un Problema}
+
+\begin{definition}
+    Un problema está \emph{bien condicionado} si pequeñas perturbaciones en los datos de entrada causan pequeñas perturbaciones en la solución. Un problema \emph{mal condicionado} es aquel donde pequeñas perturbaciones en los datos pueden causar grandes cambios en la solución.
+\end{definition}
+
+El número de condición $\kappa$ cuantifica la condición de un problema. Para un problema $f: \mathbb{R} \rightarrow \mathbb{R}$, el número de condición en $x \neq 0$ se define como:
+$$
+    \kappa(x) = \lim_{\delta x \rightarrow 0} \left| \frac{(f(x + \delta x) - f(x))/f(x)}{\delta x / x} \right| = \left| \frac{x f'(x)}{f(x)} \right|
+$$
+Para un problema $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$, la definición es más compleja e involucra normas.
+
+\begin{example}
+    Para la función $f(x) = \tan(x)$ cerca de $x_0 = \pi/2$, el número de condición es
+    $$
+        \left| \frac{x_0 \sec^2(x_0)}{\tan(x_0)} \right| = \left| \frac{x_0}{ \sin(x_0) \cos(x_0)} \right|,
+    $$
+    que tiende a infinito cuando $x_0 \rightarrow \pi/2^-$. Esto indica que el cálculo de la tangente cerca de $\pi/2$ es un problema mal condicionado.
+\end{example}
+
+\begin{example}
+    El problema de encontrar las raíces del polinomio de Wilkinson $p(x) = \prod_{i=1}^{20}(x-i)$ es un ejemplo clásico de un problema mal condicionado. Una pequeña perturbación en el coeficiente de $x^{19}$ puede causar cambios drásticos en las raíces.
+\end{example}
+
+\subsection{Estabilidad de un Algoritmo}
+\begin{definition}
+    Un algoritmo es \emph{estable} si los errores de redondeo introducidos durante la computación no crecen desproporcionadamente a lo largo de los pasos del algoritmo. Un algoritmo \emph{inestable} puede producir resultados muy diferentes de la solución exacta, incluso si el problema en sí está bien condicionado.
+\end{definition}
+
+\begin{example}
+    Para evaluar $e^{-12}$, el algoritmo basado en la serie de Taylor $e^{-x} = \sum_{n=0}^{\infty} \frac{(-x)^n}{n!}$ para $x=12$ es inestable debido a la cancelación de términos grandes con signos opuestos. Un algoritmo más estable es utilizar la serie para $e^{12}$ y luego tomar el inverso.
+\end{example}
+
+\begin{example}
+    Evaluar el polinomio $p(x) = (x-1)^7$ directamente o expandiéndolo como
+    $$
+        p(x) = x^7 - 7x^6 + 21x^5 - 35x^4 + 35x^3 - 21x^2 + 7x - 1
+    $$
+    puede dar resultados numéricamente diferentes debido a la acumulación de errores de redondeo, especialmente cerca de la raíz $x=1$. La forma factorizada $(x-1)^7$ es numéricamente más estable cerca de la raíz.
+\end{example}
+
+\section{Aproximación de EDOs}
+
+\subsection{Problema de Valor Inicial }
+
+\begin{definition}
+    Un \emph{Problema de Valor Inicial} (PVI) para una EDO de primer orden consiste en encontrar una función $x(t)$ que satisface:
+    $$
+        \begin{cases}
+            x'(t) = f(x(t), t), \quad t \in (a, b) \\
+            x(t_0) = x_0
+        \end{cases}
+    $$
+    donde $t_0 \in [a, b]$ es el punto inicial y $x_0 \in \Omega$ es el valor inicial. Para garantizar la existencia y unicidad de la solución, se requiere que $f$ sea continua en $t$ y Lipschitz continua en $x$, es decir, existe una constante $L > 0$ tal que $|f(x, t) - f(y, t)| \le L|x - y|$ para todo $x, y$ en el dominio de interés y $t \in [a, b]$.
+\end{definition}
+
+\subsection{Método de Euler}
+
+El método de Euler es un método numérico de primer orden para aproximar la solución de un PVI. Dado un tamaño de paso $h = (T - t_0) / N$, donde $N$ es el número de pasos, y los puntos $t_i = t_0 + ih$, la aproximación $x_i \approx x(t_i)$ se calcula mediante la fórmula:
+$$
+    x_{i+1} = x_i + h f(x_i, t_i), \quad i = 0, 1, \dots, N-1
+$$
+
+\subsection{Métodos de Taylor de Orden Superior}
+
+Se pueden obtener métodos más precisos utilizando la expansión de Taylor de la solución $x(t)$ alrededor de $t_n$:
+$$
+    x(t_{n+1}) = x(t_n + h) = x(t_n) + hx'(t_n) + \frac{h^2}{2!}x''(t_n) + \dots + \frac{h^p}{p!}x^{(p)}(t_n) + O(h^{p+1})
+$$
+El método de Euler es el método de Taylor de primer orden. El método de Taylor de segundo orden utiliza la primera y segunda derivada:
+$$
+    x_{n+1} = x_n + hf(x_n, t_n) + \frac{h^2}{2} \left[ \frac{\partial f}{\partial t}(x_n, t_n) + \frac{\partial f}{\partial x}(x_n, t_n) f(x_n, t_n) \right]
+$$
+En general, los métodos de un paso para la aproximación de PVIs se pueden escribir en la forma:
+$$
+    x_{n+1} = x_n + h \Phi(x_n, t_n, h)
+$$
+donde $\Phi$ es una función que determina el método. Para el método de Euler, $\Phi(x_n, t_n, h) = f(x_n, t_n)$. Para el método de Taylor de segundo orden,
+$$
+    \Phi(x_n, t_n, h) = f(x_n, t_n) + \frac{h}{2} \left[ \frac{\partial f}{\partial t}(x_n, t_n) + \frac{\partial f}{\partial x}(x_n, t_n) f(x_n, t_n) \right].
+$$

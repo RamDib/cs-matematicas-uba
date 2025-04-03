@@ -1,0 +1,5 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Aritmética de punto flotante}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Números de máquina}{2}{}%
+\contentsline {subsection}{\numberline {1.2}Error absoluto y relativo}{3}{}%
+\contentsline {subsection}{\numberline {1.3}Épsilon de Máquina}{4}{}%

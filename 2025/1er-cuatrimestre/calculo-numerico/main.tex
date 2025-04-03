@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+
+\usepackage{mathnotes}
+\pgfplotsset{compat=1.18}
+% Title Information
+\title{\Huge  \color{maincolor} Notas de Cálculo Numérico}
+\author{Ramiro Dibur}
+\date{}
+
+% Document
+
+\begin{document}
+
+\pagenumbering{gobble}
+\vspace*{\fill}
+\begin{center}
+    \vspace*{\stretch{1}}
+    {\Huge \color{maincolor} Notas de Cálculo Numérico} \\[1em]
+    {\large Ramiro Dibur}
+    \vspace*{\stretch{2}}
+\end{center}
+\vspace*{\fill}
+\newpage
+\pagenumbering{arabic}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Aritmética de punto flotante}
+
+En esta sección se introduce cómo se representan los números en una computadora, los errores asociados a estas representaciones, y cómo estos errores pueden propagarse en los cálculos. Además, se presentan ejemplos de problemas mal condicionados y se discute el concepto de estabilidad numérica.
+
+\subsection{Números de máquina}
+
+Un número real $x \neq 0$ puede representarse en una base $b \in \mathbb{N}$, $b \ge 2$, mediante una expansión en serie:
+$$
+    x = \pm \left( d_k b^k + d_{k-1} b^{k-1} + \dots + d_0 b^0 + d_{-1} b^{-1} + d_{-2} b^{-2} + \dots \right)
+$$
+donde los dígitos $d_i$ satisfacen $0 \le d_i \le b-1$. Esta representación es única si se excluyen las expansiones infinitas que terminan en una secuencia de $b-1$.
+
+Sin embargo, como en las computadoras tenemos espacio finito, nece
+
+\begin{definition}
+    Un número de máquina (o número de punto flotante) $x$ en base $b$ se representa generalmente en forma normalizada como
+    $$
+        x = \pm (0.d_1 d_2 \dots d_m)_b \times b^e
+    $$
+    donde $d_1 d_2 \dots d_m$ es la mantisa y $e$ el exponente.
+\end{definition}
+
+Dado un número real $x$, si no es un número de máquina, debe ser aproximado por uno. El proceso de aproximación se llama redondeo. Dos estrategias comunes son:
+
+\begin{itemize}
+    \item \textbf{Redondeo al más cercano}: Se elige el número de máquina más cercano a $x$.
+    \item \textbf{Truncamiento (o redondeo hacia cero)}: Se elige el número de máquina más cercano a $x$ en dirección hacia cero.
+\end{itemize}
+
+Es posible que el resultado de una operación no pueda representarse exactamente debido a las limitaciones en la precisión de los números de máquina. Esto puede dar lugar a dos tipos principales de errores:
+
+\begin{itemize}
+    \item \textbf{Overflow:} Ocurre cuando el resultado de una operación excede en magnitud el número de máquina más grande que se puede representar. Esto puede llevar a resultados infinitos o errores en los cálculos.
+    \item \textbf{Underflow:} Ocurre cuando el resultado de una operación es menor en magnitud que el número de máquina positivo más pequeño que se puede representar (sin ser cero). En este caso, el resultado puede aproximarse a cero, lo que puede introducir errores de redondeo.
+\end{itemize}
+
+\subsection{Error absoluto y relativo}
+
+\begin{definition}
+    Si $fl(x)$ es la representación de máquina de $x$, el error absoluto se define como 
+    $$|x - fl(x)|,$$
+    y el error relativo como 
+    $$\frac{|x - fl(x)|}{|x|}.$$
+\end{definition}
+
+Para el redondeo al más cercano, el error absoluto está acotado por
+$$|x - fl(x)| \leq \frac{1}{2} b^{e-m},$$ donde $e$ es el exponente tal que $b^{e-1} \le |x| < b^e$. El error relativo está acotado por
+$$
+    \left| \frac{x - fl(x)}{x} \right| \le \frac{1}{2} b^{1-m}.
+$$
+
+\subsection{Épsilon de Máquina}
+
+\begin{definition}
+    El \emph{épsilon de máquina}, denotado por $\epsilon_m$, es la cota superior del error relativo cometido al representar un número real mediante un número de máquina utilizando el redondeo al más cercano.
+    $$
+        \epsilon_m = \frac{1}{2} b^{1-m}
+    $$
+    Equivalentemente, $\epsilon_m$ es el menor número positivo de máquina tal que $1 \oplus \epsilon_m > 1$, donde $\oplus$ denota la adición en la aritmética de punto flotante de la máquina.
+\end{definition}
+
+\end{document}

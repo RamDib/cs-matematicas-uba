@@ -80,11 +80,67 @@ $$
 \subsection{Épsilon de Máquina}
 
 \begin{definition}
-    El \emph{épsilon de máquina}, denotado por $\epsilon_m$, es la cota superior del error relativo cometido al representar un número real mediante un número de máquina utilizando el redondeo al más cercano.
+    El \emph{épsilon de máquina}, denotado por $\varepsilon$, es la cota superior del error relativo cometido al representar un número real mediante un número de máquina utilizando el redondeo al más cercano.
     $$
-        \epsilon_m = \frac{1}{2} b^{1-m}
+        \varepsilon = \frac{1}{2} b^{1-m}.
     $$
-    Equivalentemente, $\epsilon_m$ es el menor número positivo de máquina tal que $1 \oplus \epsilon_m > 1$, donde $\oplus$ denota la adición en la aritmética de punto flotante de la máquina.
 \end{definition}
+
+\begin{remark}
+    En \texttt{python}, con variables del tipo \texttt{float}, el valor de $\varepsilon$ se puede obtener utilizando el módulo \texttt{sys}:
+    \begin{lstlisting}[language=iPython]
+import numpy as np
+np.finfo(float).eps\end{lstlisting}
+    Este valor representa la diferencia más pequeña entre $1.0$ y el siguiente número representable mayor que $1.0$ en la aritmética de punto flotante de la máquina.
+\end{remark}
+
+En general, cuando realizamos operaciones, los errores de la máquina se acumulan. Veamos qué pasa cuando sumamos dos números cualesquiera en la máquina.
+
+Sean $x$ e $y$ números con el mismo signo tales que sus errores relativos son $\mu_x$ y $\mu_y$, respectivamente. Notemos que $|\mu_x|, |\mu_y| \leq \varepsilon$. Sea $\mu_z$ el error relativo de la suma. Entonces,
+\begin{align*}
+    x \oplus y &= fl(fl(x) + fl(y)) \\
+    &= (fl(x) + fl(y))(1 + \mu_z) \\
+    \implies \left| x \oplus y - (x+y) \right| &\leq (x + y) 2 \varepsilon + O(\varepsilon^{2}).
+\end{align*}
+Y entonces nos queda
+$$
+    \frac{\left| x \oplus y - (x + y) \right| }{\left| x + y \right| } \lesssim 2\varepsilon.
+$$
+
+\section{Aproximación de EDOs}
+
+Consideramos las ecuaciones diferenciales ordinarias de orden $1$. El problema de valores iniciales (PVI) consta en hallar $x: (a, b) \to \mathbb{R}$ tal que 
+$$
+    \begin{cases}
+        x'(t) = f(t, x) \\
+        x(t_0) = x_0.
+    \end{cases}
+$$
+Las hipótesis más usuales son que 
+\begin{itemize}
+    \item $f$ continua.
+    \item $f$ Lipschitz en la variable $x$.
+\end{itemize}
+Dadas estas hipótesis, existe una única solución del problema de valores iniciales. Además, son necesarias para los métodos numéricos, ya que sino no hay forma de corroborar qué solución está dando un método.
+
+\subsection{Método de Euler}
+
+\begin{custombox}[Método de Euler]
+    Dado el problema de valores iniciales
+    $$
+    \begin{cases}
+        x'(t) = f(t, x) \\
+        x(t_0) = x_0,
+    \end{cases}
+    $$
+    queremos aproximar $x(T)$ para $T > t_0$. Tomamos $N \in \mathbb{N}$ y $h = \frac{T - t_0}{N}$. Entonces,
+    \begin{itemize}
+        \item $t_i = t_0 + h \cdot i$ para $0 \leq i \leq N$.
+        \item $x_{i+1} = x_i + h \cdot f(x_i, t_i)$
+    \end{itemize}
+
+\end{custombox}
+
+
 
 \end{document}
